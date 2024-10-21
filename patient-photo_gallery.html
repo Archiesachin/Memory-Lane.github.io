@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Lane</title>
+    <style>
+        body {
+            font-family: 'Jost', sans-serif; /* Use your desired font */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #gallery {
+            display: flex;
+            flex-wrap: wrap; /* Wrap images to the next line */
+            justify-content: center; /* Center images */
+            gap: 15px; /* Space between images */
+            padding: 10px; /* Padding around the gallery */
+        }
+
+        .image-container {
+            max-width: 500px; /* Limit width of image containers */
+            max-height: 300px; /* Limit height of image containers */
+            overflow: hidden; /* Hide overflow */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            transition: transform 0.2s; /* Smooth scale effect */
+        }
+
+        .image-container img {
+            width: 100%; /* Image fills the container */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Crop if necessary */
+        }
+
+        .image-container:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+    </style>
+    <!--CSS-->
+    <link rel="stylesheet" href="./dist/output.css">
+    <!--ICONS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.min.css">
+    <!--Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/swiper-bundle.min.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script type="module" src="./js/sign-up.js" defer></script>
+</head>
+<body>
+  <header class="sticky top-0 h-[90px] shadow-xl z-30 bg-white">
+    <div class="container mx-auto flex justify-between h-full items-center">
+        <a href="#">
+            <img src="./assets/logo.jpeg" alt="" class="w-[200px]">
+        </a>
+        <nav>
+            <div class="cursor-pointer lg:hidden" id="nav_trigger_btn">
+                <i class="ri-menu-4-line text-4xl text-primary"></i>
+            </div>
+            <ul class="fixed w-full h-0 p-0 bg-white overflow-hidden border-t top-[90px] left-0 right-0 flex flex-col gap-4 lg:relative lg:flex-row lg:p-0 lg:top-0 lg:border-none lg:h-full transition-all duration-300" id="nav_menu">
+                <li class="p-2"><a href="./index.html">Home</a></li>
+                <li class="p-2"><a href="./index.html#about">About</a></li>
+                <li class="p-2"><a href="./index.html#contact">Contact Us</a></li>
+                
+                <div id="user-auth-section">
+                    <button class="btn-accent w-[120px] h-[50px] lg:p-0 p-2 rounded-lg">
+                        <a href="./sign-up.html" class="text-white hover:text-black" id="auth-btn">Sign In</a>
+                    </button>
+                </div>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="steps mt-[30px] xl:mt-[30px] relative z-20 mb-10">
+  <div class="container mx-auto">
+    <h1>Photo Gallery</h1>
+    <div id="gallery"></div>
+    </div>
+</section>
+
+<footer class="bg-white  m-4">
+    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+        <hr class="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
+        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="index.html" class="hover:underline">Memory Lane™</a>. All Rights Reserved.</span>
+    </div>
+</footer>
+
+<script>
+    // Open or create an IndexedDB instance
+    const request = indexedDB.open('imageDB', 1);
+
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        const transaction = db.transaction('images', 'readonly');
+        const store = transaction.objectStore('images');
+
+        const getRequest = store.getAll();
+
+        getRequest.onsuccess = function() {
+            const imagesArray = getRequest.result;
+            const galleryDiv = document.getElementById('gallery');
+
+            imagesArray.forEach(imageObj => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'image-container';
+
+                const img = document.createElement('img');
+                img.src = imageObj.image;
+                imgContainer.appendChild(img);
+                galleryDiv.appendChild(imgContainer);
+            });
+        };
+    };
+</script>
+
+</body>
+</html>
