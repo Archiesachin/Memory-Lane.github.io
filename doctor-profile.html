@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Lane</title>
     <!--CSS-->
-    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="./dist/output.css">
+
     <!--ICONS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.min.css">
     <!--Fonts-->
@@ -14,15 +15,18 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- <link rel="stylesheet" href="css/swiper-bundle.min.css"> -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js"></script>
     <script type="module" src="./js/sign-up.js" defer></script>
 </head>
 <body>
     <!--Navbar-->
-
     <header class="sticky top-0 h-[90px] shadow-xl z-30 bg-white">
         <div class="container mx-auto flex justify-between h-full items-center">
             <a href="#">
-                <img src="assets/logo.jpeg" alt="" class="w-[200px]">
+                <img src="./assets/logo.jpeg" alt="" class="w-[200px]">
             </a>
             <nav>
                 <div class="cursor-pointer lg:hidden" id="nav_trigger_btn">
@@ -30,9 +34,9 @@
                 </div>
                 <ul class="fixed w-full h-0 p-0 bg-white overflow-hidden border-t top-[90px] left-0 right-0 flex flex-col gap-4 lg:relative lg:flex-row lg:p-0 lg:top-0 lg:border-none lg:h-full transition-all duration-300" id="nav_menu">
                     <li class="p-2"><a href="./doctor-dashboard.html">Dashboard</a></li>
-                    <li class="p-2"><a href="#home">Home</a></li>
-                    <li class="p-2"><a href="#about">About</a></li>
-                    <li class="p-2"><a href="#contact">Contact Us</a></li>
+                    <li class="p-2"><a href="./index.html">Home</a></li>
+                    <li class="p-2"><a href="./index.html#about">About</a></li>
+                    <li class="p-2"><a href="./index.html#contact">Contact Us</a></li>
                     
                     <!-- Placeholder for user info or sign-in button -->
                     <div id="user-auth-section">
@@ -45,32 +49,25 @@
         </div>
     </header>
 
-    <div id="patient-list" class="mt-4 px-4">
-        <!-- Patients will be populated here -->
-         
-        <table class="table-auto w-full border-collapse border border-gray-400">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Age</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Gender</th>
-                </tr>
-            </thead>
-            <tbody id="patient-table-body">
-                <!-- Patient data rows will be added here dynamically -->
-            </tbody>
-        </table>
-    </div>
-    
-    
-    
+    <!-- Doctor Info Section -->
+    <section class="container mx-auto mt-10 flex flex-col items-center text-center">
+        <h2 class="text-2xl font-bold mb-4">Doctor's Profile</h2>
+        
+        <!-- Static Doctor Image -->
+        <img src="./assets/doctor.svg" alt="Doctor" class="w-48 h-48 rounded-full object-cover mb-4">
+        <div id="user-details" class="mt-2 p-4">
+            <h3 class="h3">Doctor Details</h3>
+            <!-- User details will be populated here -->
+        </div>
+        
+        
+        <!-- Doctor's Details -->
+        <!-- <div id="doctor-info">
+            <h3 class="text-xl font-semibold" id="doctor-name">Doctor Name</h3>
+            <p class="text-gray-700" id="doctor-email">doctor@example.com</p>
+        </div> -->
+    </section>
 
-
-   
-
-    
     <script src="./js/main.js"></script>
-   
 </body>
 </html>

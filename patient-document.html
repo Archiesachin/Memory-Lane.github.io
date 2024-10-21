@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Lane</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="./dist/output.css">
+
+    <!--ICONS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.min.css">
+    <!--Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script type="module" src="./js/sign-up.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+</head>
+<body>
+    <!--Navbar-->
+    <header class="sticky top-0 h-[90px] shadow-xl z-30 bg-white">
+        <div class="container mx-auto flex justify-between h-full items-center">
+            <a href="#">
+                <img src="./assets/logo.jpeg" alt="" class="w-[200px]">
+            </a>
+            <nav>
+                <div class="cursor-pointer lg:hidden" id="nav_trigger_btn">
+                    <i class="ri-menu-4-line text-4xl text-primary"></i>
+                </div>
+                <ul class="fixed w-full h-0 p-0 bg-white overflow-hidden border-t top-[90px] left-0 right-0 flex flex-col gap-4 lg:relative lg:flex-row lg:p-0 lg:top-0 lg:border-none lg:h-full transition-all duration-300" id="nav_menu">
+                    <li class="p-2"><a href="./caretaker-dashboard.html">Dashboard</a></li>
+                    <li class="p-2"><a href="./index.html">Home</a></li>
+                    <li class="p-2"><a href="./index.html#about">About</a></li>
+                    <li class="p-2"><a href="./index.html#contact">Contact Us</a></li>
+                    
+                    <!-- Placeholder for user info or sign-in button -->
+                    <div id="user-auth-section">
+                        <button class="btn-accent w-[120px] h-[50px] lg:p-0 p-2 rounded-lg">
+                            <a href="./sign-up.html" class="text-white hover:text-black" id="auth-btn">Sign Up</a>
+                        </button>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h2 class="flex justify-center items-center mt-10 h2">Patient Medicines</h2>
+
+    <!-- Medicine table -->
+    <div class="container mx-auto mt-8">
+        <table class="w-full text-left table-auto border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 border">Medicine Name</th>
+                    <th class="px-4 py-2 border">Dosage</th>
+                </tr>
+            </thead>
+            <tbody id="medicineList">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Retrieve medicines from localStorage
+        const medicineList = document.getElementById('medicineList');
+        const storedMedicines = localStorage.getItem('extractedMedicines');
+        
+        if (storedMedicines) {
+            const medicines = JSON.parse(storedMedicines);
+
+            medicines.forEach(medicine => {
+                const row = document.createElement('tr');
+                row.classList.add('bg-green-50', 'border-b');
+
+                const medicineNameCell = document.createElement('td');
+                medicineNameCell.classList.add('px-4', 'py-2', 'border');
+                medicineNameCell.textContent = medicine['Medicine Name'];
+
+                const dosageCell = document.createElement('td');
+                dosageCell.classList.add('px-4', 'py-2', 'border');
+                dosageCell.textContent = medicine['Dosage'];
+
+                row.appendChild(medicineNameCell);
+                row.appendChild(dosageCell);
+                medicineList.appendChild(row);
+            });
+        } else {
+            const noMedicinesRow = document.createElement('tr');
+            const noMedicinesCell = document.createElement('td');
+            noMedicinesCell.colSpan = 2; // Updated to match the number of columns
+            noMedicinesCell.classList.add('px-4', 'py-2', 'text-center');
+            noMedicinesCell.textContent = 'No medicines found.';
+            noMedicinesRow.appendChild(noMedicinesCell);
+            medicineList.appendChild(noMedicinesRow);
+        }
+    </script>
+
+</body>
+</html>

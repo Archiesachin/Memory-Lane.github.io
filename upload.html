@@ -134,27 +134,31 @@
         }
 
         function displayExtractedMedicines(medicines) {
-            if (medicines.length === 0) {
-                alert('No dementia medicines found.');
-                return;
-            }
+    if (medicines.length === 0) {
+        alert('No dementia medicines found.');
+        return;
+    }
 
-            medicineList.innerHTML = '';  // Clear previous results
+    medicineList.innerHTML = '';  // Clear previous results
 
-            medicines.forEach(medicine => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <input type="checkbox" class="mr-2 rounded-md">
-                    ${medicine['Medicine Name']} - ${medicine['Dosage']}
-                `;
-                listItem.querySelector('input').addEventListener('change', function() {
-                    listItem.classList.toggle('line-through');
-                    listItem.classList.toggle('bg-green-100');
-                });
-                listItem.classList.add('flex', 'items-center', 'bg-green-50', 'px-4', 'py-2', 'rounded-lg', 'shadow-sm');
-                medicineList.appendChild(listItem);
-            });
-        }
+    // Save extracted medicines to localStorage
+    localStorage.setItem('extractedMedicines', JSON.stringify(medicines));
+
+    medicines.forEach(medicine => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <input type="checkbox" class="mr-2 rounded-md">
+            ${medicine['Medicine Name']} - ${medicine['Dosage']}
+        `;
+        listItem.querySelector('input').addEventListener('change', function() {
+            listItem.classList.toggle('line-through');
+            listItem.classList.toggle('bg-green-100');
+        });
+        listItem.classList.add('flex', 'items-center', 'bg-green-50', 'px-4', 'py-2', 'rounded-lg', 'shadow-sm');
+        medicineList.appendChild(listItem);
+    });
+}
+
     </script>
 
 

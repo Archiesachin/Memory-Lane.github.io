@@ -13,17 +13,53 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="css/swiper-bundle.min.css"> -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <script type="module" src="./js/sign-up.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="./js/main.js" defer></script>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 50; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.8); 
+        }
+
+        .modal-content {
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <!--Navbar-->
-
     <header class="sticky top-0 h-[90px] shadow-xl z-30 bg-white">
         <div class="container mx-auto flex justify-between h-full items-center">
             <a href="#">
@@ -49,28 +85,131 @@
             </nav>
         </div>
     </header>
-    
-
 
     <main class="max-w-[1920px] mx-auto bg-white overflow-hidden">
-        <h2 class="flex justify-center items-center mt-10 h2">Store Reports</h1>        
+        <h2 class="flex justify-center items-center mt-10 h2">Store Reports</h2>        
         <form id="uploadForm" enctype="multipart/form-data" class="mb-6 flex justify-center items-center gap-4 mt-8">
             <input type="file" id="fileInput" accept="image/*,application/pdf" class="block p-2 border border-gray-300 rounded-md" required>
             <button type="submit" class="btn-accent text-white px-6 py-2 rounded-lg">Upload</button>
         </form>
 
         <div id="ocrResult" class="mt-4 mx-auto w-full max-w-md">
-            <h3 class="h3 flex justify-center items-center">Patients Reports</h2>
+            <h3 class="h3 flex justify-center items-center">Patients Reports</h3>
             <ul id="medicineList" class="list-none space-y-2"></ul>
         </div>
     </main>
-    
 
-    
-    <script src="./js/main.js"></script>
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" class="modal-image" src="" alt="Report Image">
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileInput = document.getElementById('fileInput');
+            const uploadForm = document.getElementById('uploadForm');
+            const medicineList = document.getElementById('medicineList');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalBtn = document.getElementsByClassName('close')[0];
 
+            // Function to display the uploaded files
+            function displayFiles() {
+                const storedFiles = JSON.parse(localStorage.getItem('prescriptions')) || [];
+                medicineList.innerHTML = ''; // Clear existing list
 
-   
+                storedFiles.forEach((file, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'border p-2 rounded-md flex justify-between items-center';
+
+                    if (file.type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = file.url;
+                        img.alt = `Report ${index + 1}`;
+                        img.className = 'w-[100px] h-[100px] object-cover cursor-pointer';
+                        img.addEventListener('click', function () {
+                            openModal(file.url); // Open modal on click
+                        });
+                        listItem.appendChild(img);
+                    } else if (file.type === 'pdf') {
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = file.url;
+                        pdfLink.textContent = `Report ${index + 1} (PDF)`;
+                        pdfLink.target = '_blank';
+                        pdfLink.className = 'text-blue-600 underline';
+                        listItem.appendChild(pdfLink);
+                    }
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.className = 'bg-red-500 text-white px-4 py-1 rounded';
+                    deleteButton.addEventListener('click', function () {
+                        deleteFile(index);
+                    });
+
+                    listItem.appendChild(deleteButton);
+                    medicineList.appendChild(listItem);
+                });
+            }
+
+            // Function to save files to localStorage
+            function saveFile(fileUrl, fileType) {
+                const storedFiles = JSON.parse(localStorage.getItem('prescriptions')) || [];
+                storedFiles.push({ url: fileUrl, type: fileType });
+                localStorage.setItem('prescriptions', JSON.stringify(storedFiles));
+                displayFiles();
+            }
+
+            // Handle form submission and file upload
+            uploadForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const file = fileInput.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const fileUrl = e.target.result;
+                    const fileType = file.type.startsWith('image') ? 'image' : 'pdf';
+                    saveFile(fileUrl, fileType);
+                };
+
+                if (file.type.startsWith('image')) {
+                    reader.readAsDataURL(file); // Read image files as Data URL
+                } else if (file.type === 'application/pdf') {
+                    reader.readAsDataURL(file); // Read PDF files as Data URL
+                }
+            });
+
+            // Function to delete file from localStorage
+            function deleteFile(index) {
+                const storedFiles = JSON.parse(localStorage.getItem('prescriptions')) || [];
+                storedFiles.splice(index, 1);
+                localStorage.setItem('prescriptions', JSON.stringify(storedFiles));
+                displayFiles();
+            }
+
+            // Modal control functions
+            function openModal(imageSrc) {
+                modal.style.display = 'block';
+                modalImage.src = imageSrc;
+            }
+
+            closeModalBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Load files from localStorage when the page loads
+            displayFiles();
+        });
+    </script>
 </body>
 </html>

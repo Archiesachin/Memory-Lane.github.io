@@ -6,7 +6,7 @@
     <title>Memory Lane</title>
     <style>
         body {
-            font-family: 'Jost', sans-serif; /* Use your desired font */
+            font-family: 'Jost', sans-serif;
         }
 
         h1 {
@@ -16,29 +16,64 @@
 
         #gallery {
             display: flex;
-            flex-wrap: wrap; /* Wrap images to the next line */
-            justify-content: center; /* Center images */
-            gap: 15px; /* Space between images */
-            padding: 10px; /* Padding around the gallery */
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
         }
 
         .image-container {
-            max-width: 500px; /* Limit width of image containers */
-            max-height: 300px; /* Limit height of image containers */
-            overflow: hidden; /* Hide overflow */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-            transition: transform 0.2s; /* Smooth scale effect */
+            max-width: 400px;
+            max-height: 400px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
         }
 
         .image-container img {
-            width: 100%; /* Image fills the container */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Crop if necessary */
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            cursor: pointer;
         }
 
         .image-container:hover {
-            transform: scale(1.05); /* Scale effect on hover */
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .modal:target {
+            display: flex;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
     <!--CSS-->
@@ -49,8 +84,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="css/swiper-bundle.min.css"> -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <script type="module" src="./js/sign-up.js" defer></script>
 </head>
 <body>
@@ -64,6 +97,7 @@
                 <i class="ri-menu-4-line text-4xl text-primary"></i>
             </div>
             <ul class="fixed w-full h-0 p-0 bg-white overflow-hidden border-t top-[90px] left-0 right-0 flex flex-col gap-4 lg:relative lg:flex-row lg:p-0 lg:top-0 lg:border-none lg:h-full transition-all duration-300" id="nav_menu">
+                <li class="p-2"><a href="./patient-dashboard.html">Dashboard</a></li>
                 <li class="p-2"><a href="./index.html">Home</a></li>
                 <li class="p-2"><a href="./index.html#about">About</a></li>
                 <li class="p-2"><a href="./index.html#contact">Contact Us</a></li>
@@ -80,17 +114,18 @@
 
 <section class="steps mt-[30px] xl:mt-[30px] relative z-20 mb-10">
   <div class="container mx-auto">
-    <h1>Photo Gallery</h1>
+    <h1 class="h2">Photo Gallery</h1>
     <div id="gallery"></div>
     </div>
 </section>
 
-<footer class="bg-white  m-4">
-    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <hr class="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
-        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="index.html" class="hover:underline">Memory Lane™</a>. All Rights Reserved.</span>
-    </div>
-</footer>
+<!-- Modal for full image view -->
+<div id="modal" class="modal">
+    <a href="#" class="close">&times;</a>
+    <img id="modal-image" src="" alt="Full Image">
+</div>
+
+
 
 <script>
     // Open or create an IndexedDB instance
@@ -106,6 +141,8 @@
         getRequest.onsuccess = function() {
             const imagesArray = getRequest.result;
             const galleryDiv = document.getElementById('gallery');
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
 
             imagesArray.forEach(imageObj => {
                 const imgContainer = document.createElement('div');
@@ -115,6 +152,11 @@
                 img.src = imageObj.image;
                 imgContainer.appendChild(img);
                 galleryDiv.appendChild(imgContainer);
+
+                img.addEventListener('click', () => {
+                    modalImage.src = img.src;
+                    window.location.href = '#modal'; // Open modal
+                });
             });
         };
     };

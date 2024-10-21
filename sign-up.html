@@ -48,15 +48,17 @@
                     <h2 class="text-2xl font-semibold mb-6 text-primary text-center font-secondary">Create Your Account</h2>
                     <form action="#" method="post" class="space-y-4">
                         <div class="text-green-500 p-2 m-2 font-semibold" id="signUpMessage" style="display: none;"></div>
+                
                         <div>
                             <label for="fullname" class="block mb-2 text-md font-medium text-gray-700">Full Name</label>
                             <input type="text" id="fullname" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" placeholder="Full name" required>
                         </div>
+                        
                         <div>
                             <label for="email" class="block mb-2 text-md font-medium text-gray-700">Email</label>
                             <input type="email" id="email" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" placeholder="Enter your email" required>
                         </div>
-
+                
                         <div class="relative">
                             <label for="password" class="block mb-2 text-md font-medium text-gray-700">Password</label>
                             <input type="password" id="password" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" placeholder="Create a password" required>
@@ -65,6 +67,23 @@
                             <i id="togglePassword" class="ri-eye-off-fill absolute right-4 cursor-pointer text-2xl text-gray-500" style="margin-top: 15px;"></i>
                         </div>
                         
+                        <!-- Age Input -->
+                        <div>
+                            <label for="age" class="block mb-2 text-md font-medium text-gray-700">Age</label>
+                            <input type="number" id="age" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" placeholder="Enter your age" required>
+                        </div>
+                
+                        <!-- Gender Dropdown -->
+                        <div>
+                            <label for="gender" class="block mb-2 text-md font-medium text-gray-700">Gender</label>
+                            <select id="gender" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                
                         <!-- New Dropdown for 'Sign Up As' -->
                         <div>
                             <label for="signup-role" class="block mb-2 text-md font-medium text-gray-700">Sign Up As</label>
@@ -74,7 +93,7 @@
                                 <option value="doctor">Doctor</option>
                             </select>
                         </div>
-
+                
                         <!-- Doctor Selection Dropdown (hidden by default) -->
                         <div id="doctor-dropdown-container" class="hidden mt-4">
                             <label for="doctor-selection" class="block mb-2 text-md font-medium text-gray-700">Select Doctor</label>
@@ -82,11 +101,26 @@
                                 <!-- Doctors will be populated here dynamically -->
                             </select>
                         </div>
+
+                        <!-- patient Selection Dropdown (hidden by default) -->
+                        <div id="patient-dropdown-container" class="hidden">
+                            <label for="patient-selection">Select Patient:</label>
+                            <select id="patient-selection" class="form-select mt-1 block w-full">
+                                <option value="">Select a patient</option>
+                            </select>
+                        </div>
                         
+                        <!-- License Number Input for Doctors (hidden by default) -->
+                        <div id="license-number-container" class="hidden mt-4">
+                            <label for="license-number" class="block mb-2 text-md font-medium text-gray-700">License Number</label>
+                            <input type="text" id="license-number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary text-md" placeholder="Enter your license number">
+                        </div>
+                
                         <button type="submit" id="submitSignUp" class="w-full py-3 px-5 bg-accent text-white text-center rounded-lg font-medium focus:ring-4 focus:outline-none focus:ring-primary-300">Sign Up</button>
                     </form>
                     <p class="mt-4 text-center text-md text-gray-600">Already have an account? <a href="#" id="show-login" class="text-primary font-semibold text-md">Login</a></p>
                 </div>
+                
 
                 <!-- Login Form -->
                 <div id="login-form" class="w-full hidden">
@@ -128,7 +162,7 @@
     </footer>
 
     <!--JavaScript-->
-    <script src="./js/sign-up.js"></script>
+    <script src="./js/main.js"></script>
     <script>
         const showLoginLink = document.getElementById('show-login');
         const showSignUpLink = document.getElementById('show-sign-up');
