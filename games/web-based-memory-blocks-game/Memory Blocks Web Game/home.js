@@ -97,8 +97,8 @@ function changeImage(a)
 
            //Give a 2 second delay for the user to see the picture and hide them
            window.setTimeout(function(){
-           open_ele[0].style.backgroundColor="black";
-           open_ele[1].style.backgroundColor="black";
+           open_ele[0].style.backgroundColor="#0166ff";
+           open_ele[1].style.backgroundColor="#0166ff";
            open_ele[0].style.backgroundImage="none";
            open_ele[1].style.backgroundImage="none";
            open_ele.length=0;
@@ -166,7 +166,7 @@ function setBackground()
   td = document.getElementsByClassName("ele");
   for(var i=0;i<td.length;i++)
   {
-    td[i].style.backgroundColor="black";
+    td[i].style.backgroundColor="#0166ff";
     td[i].style.backgroundImage="none";
     td[i].style.visibility="visible";
   }

@@ -34,7 +34,7 @@ h1, h2 {
 
 body {
 
-	background-color: #EAF7FB;
+	background-color: #b9efff;
 
 }
 
@@ -82,25 +82,25 @@ body {
 
 .cell:hover {
 
-	background-color: rgb(151, 141, 242);
+	background-color: #0166ff;
 
 }
 
 .cell.selectable {
 
-	background-color: rgb(206, 206, 234);
+	background-color: #b4d2ff;
 
 }
 
 .cell.selected { 
 
-	background-color: rgb(106, 90, 205);
+	background-color: #0166ff;
 
 }
 
 .cell.found {
 
-	background-color: rgb(158, 123, 158);
+	background-color: #0166ff;
 	border: 1px black solid;
 	font-weight: bold;
 
@@ -131,7 +131,7 @@ body {
 
 .listWord.found {
 
-	color: rgb(158, 123, 158);
+	color: #0166ff;
 	text-decoration: line-through;
 	
 }

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    colors = ['#795548', '#f44336', '#03a9f4'];
+    colors = ['#0166ff', '#E0ECFF', '#03a9f4'];
     $('.wrapper').css({
         height:Math.min($(window).width(),512) - 20,
         width:Math.min($(window).width(),512) -20,
