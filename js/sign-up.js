@@ -283,7 +283,7 @@ async function fetchUserDetails(userId) {
             <p>Email: ${user.email}</p>
             <p>Age: ${user.age}</p>
             <p>Gender: ${user.gender}</p>
-            <p>Role: ${user.role}</p>
+            <p>License Number: ${user.licenseNumber}</p>
         `;
     } else {
         console.log("No such user data!");
@@ -319,6 +319,7 @@ async function fetchPatientsForDoctor(doctorId) {
                     <td class="border border-gray-300 px-4 py-2">${patientData.email}</td>
                     <td class="border border-gray-300 px-4 py-2">${patientData.age || 'N/A'}</td>
                     <td class="border border-gray-300 px-4 py-2">${patientData.gender || 'N/A'}</td>
+                    
                 `;
                 patientsContainer.appendChild(patientRow);
             }

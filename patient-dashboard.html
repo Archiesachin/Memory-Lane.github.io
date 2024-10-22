@@ -133,10 +133,13 @@
 
   <div class="flex-col justify-center items-center text-center p-8 mt-8">
     <h3 class="h3">Turn on your location</h3>
-    <button> <a href="#" class="font-medium">Click Here
-      <i class="ri-arrow-right-line"></i>
-  </a></button>
-  </div>
+    <button id="location-btn">
+        <a href="#" class="font-medium">Click Here
+            <i class="ri-arrow-right-line"></i>
+        </a>
+    </button>
+</div>
+
 
 </section>
 
@@ -151,5 +154,37 @@
  
     <script src="https://kit.fontawesome.com/cb88b54bf5.js" crossorigin="anonymous"></script>  
     <script src="./js/main.js"></script>
+    <script>
+        document.getElementById('location-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Check if Geolocation is supported
+    if (navigator.geolocation) {
+        // Request the user's current location
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    } else {
+        alert("Geolocation is not supported by your browser.");
+    }
+
+    // Success callback function when location is retrieved
+    function successCallback(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Store the latitude and longitude in localStorage
+        localStorage.setItem('latitude', latitude);
+        localStorage.setItem('longitude', longitude);
+
+        alert("Location sent to your caretaker!");
+    }
+
+    // Error callback function if location retrieval fails
+    function errorCallback(error) {
+        alert("Unable to retrieve your location. Please try again.");
+        console.error("Geolocation error:", error);
+    }
+});
+
+    </script>
 </body>
 </html>

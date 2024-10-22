@@ -91,12 +91,18 @@
   </div>
 
 </div>
-<div class="flex-col justify-center items-center text-center p-8 mt-8 ">
-  <h3 class="h3">Track Patients Location</h3>
-  <button> <a href="#" class="font-medium">Click Here
-    <i class="ri-arrow-right-line"></i>
-</a></button>
+<div class="flex-col justify-center items-center text-center p-8 mt-8">
+    <h3 class="h3">Track Patients Location</h3>
+    <button id="track-location-btn">
+        <a href="#" class="font-medium">Click Here
+            <i class="ri-arrow-right-line"></i>
+        </a>
+    </button>
 </div>
+
+<!-- Container where the map will be displayed -->
+<div id="map-container" class="mt-8" style="width: 100%; height: 450px;"></div>
+
 
 </section>
 
@@ -111,7 +117,37 @@
  
     <script src="https://kit.fontawesome.com/cb88b54bf5.js" crossorigin="anonymous"></script>  
     <script src="../static/js/main.js"></script>
-        // Passing Flask route URL into JavaScript
+    <script>
+        document.getElementById('track-location-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Retrieve the latitude and longitude from localStorage
+    const latitude = parseFloat(localStorage.getItem('latitude'));
+    const longitude = parseFloat(localStorage.getItem('longitude'));
+
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+        // Create an OpenStreetMap URL with the retrieved location
+        const openStreetMapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=18/${latitude}/${longitude}`;
+
+        // Embed the map into the page using an iframe
+        const mapContainer = document.getElementById('map-container');
+        mapContainer.innerHTML = `<iframe
+            width="100%"
+            height="450"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude-0.01},${latitude-0.01},${longitude+0.01},${latitude+0.01}&layer=mapnik&marker=${latitude},${longitude}"
+            style="border: 1px solid black;"></iframe>
+            <br/><small><a href="${openStreetMapUrl}" target="_blank">View Larger Map</a></small>`;
+    } else {
+        alert("No valid location found. Please turn on location on the first page.");
+    }
+});
+
+
+    </script>
         
 </body>
 </html>
